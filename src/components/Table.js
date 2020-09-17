@@ -6,6 +6,8 @@ import TableRow from './TableRow';
 
 const Table = ({ handleInputChange, data }) => {
 
+
+    
     const add10Rows = data.map(file => {
         return (
             <TableRow key={ file.id } file={ file } handleInputChange={ handleInputChange }/>
