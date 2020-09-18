@@ -6,34 +6,39 @@ import Buttons from './Buttons';
 
 const App = () => {
 
+  const [state, setState] = useState({
+    orderName:"",
+    board:"",
+    data:[],
+    nextID:0,
+  });
+
   useEffect(() => {
     M.AutoInit();
   });
 
-  const [state, setState] = useState({
-    orderName:"",
-    board:"",
-    data:[{
-      id:1,
-      shapeName:"",
-      shapeLength:"",
-      veneer1:"",
-      veneer2:"",
-      shapeWidth:"",
-      veneerL:"",
-      veneerR:"",
-    },
-    {
-      id:2,
-      shapeName:"",
-      shapeLength:"",
-      veneer1:"",
-      veneer2:"",
-      shapeWidth:"",
-      veneerL:"",
-      veneerR:"",
-    }]
-  });
+  useEffect(() => {
+    addNewRow(10);
+  }, []);
+
+// const add10rowsOnComponentMount = () => {
+//   const first10Rows = [];
+//   const obj = {
+//     id:1,
+//     shapeName:"",
+//     shapeLength:"",
+//     veneer1:"",
+//     veneer2:"",
+//     shapeWidth:"",
+//     veneerL:"",
+//     veneerR:"",
+//   }
+
+//   for(let i = 0; i < 10; i++){
+//     first10Rows.push
+//   }
+
+// }
 
   const handleInputChange = (e, id) => {
     const newData = state.data.map(item => {
@@ -67,8 +72,10 @@ const addNewRow = (numerRow) => {
   const newRows = [...state.data];
 
 const pureStateElement = (num) => {
+  // console.log(newRows.length)
+  // console.log(newRows[newRows.length - 1])
   return {
-  id: num + state.data.length,
+  id: state.nextID + num,
   shapeName:"",
   shapeLength:"",
   veneer1:"",
@@ -83,14 +90,47 @@ newRows.push(pureStateElement(i + 1))
 }
 
   setState({
-    ...state, data:[...newRows]
+    ...state, data:[...newRows],
+    nextID: newRows.length, 
   })
 }
+
+
+// const addNewRow = (numerRow) => {
+//   const newRows = [...state.data];
+
+// const pureStateElement = (num) => {
+//   return {
+//   id: num + state.data.length,
+//   shapeName:"",
+//   shapeLength:"",
+//   veneer1:"",
+//   veneer2:"",
+//   shapeWidth:"",
+//   veneerL:"",
+//   veneerR:"",
+// }};
+
+// for(let i = 0; i<numerRow; i++){
+// newRows.push(pureStateElement(i + 1))
+// }
+
+//   setState({
+//     ...state, data:[...newRows]
+//   })
+// }
+
+const handleRemoveRow = (id) => {
+  setState({
+    ...state, data:state.data.filter((item) => (item.id !== id))
+  })
+}
+
 
   return(
     <>
       <MainInfo handleMainInfo={ handleMainInfo } info={state}/>
-      <Table handleInputChange={ handleInputChange } data={ state.data }/>
+      <Table handleInputChange={ handleInputChange } data={ state.data } removeRow={ handleRemoveRow }/>
       <div className="row">
         <div className="col s12">
           <Buttons title={"Dodaj 1"} name={"add1"} quantity={1} addNewRow={addNewRow}/>

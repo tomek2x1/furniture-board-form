@@ -1,11 +1,11 @@
 import React from 'react'
 
-const TableRow = ({ handleInputChange, file}) => {
+const TableRow = ({ handleInputChange, file, removeRow, position}) => {
 
     return(
         <tr>
             <td>
-                <p>{ file.id }</p>
+                <p>{ position }</p>
             </td>
             <td>
                 <input type="text" name="shapeName" value={ file.shapeName } onChange={(e) => {handleInputChange(e, file.id)}} />
@@ -49,7 +49,7 @@ const TableRow = ({ handleInputChange, file}) => {
                 </div>
             </td>
             <td>
-                <button className="btn red">Usuń</button>
+                <button className="btn red" onClick={()=> removeRow(file.id)}>Usuń</button>
             </td>
         </tr>
     )
