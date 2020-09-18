@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import M from "materialize-css";
+import axios from "axios";
 import MainInfo from './MainInfo';
 import Table from './Table';
 import Buttons from './Buttons';
+
 
 const App = () => {
 
@@ -18,27 +20,9 @@ const App = () => {
   });
 
   useEffect(() => {
-    addNewRow(10);
+    addNewRow(1);
   }, []);
 
-// const add10rowsOnComponentMount = () => {
-//   const first10Rows = [];
-//   const obj = {
-//     id:1,
-//     shapeName:"",
-//     shapeLength:"",
-//     veneer1:"",
-//     veneer2:"",
-//     shapeWidth:"",
-//     veneerL:"",
-//     veneerR:"",
-//   }
-
-//   for(let i = 0; i < 10; i++){
-//     first10Rows.push
-//   }
-
-// }
 
   const handleInputChange = (e, id) => {
     const newData = state.data.map(item => {
@@ -72,8 +56,6 @@ const addNewRow = (numerRow) => {
   const newRows = [...state.data];
 
 const pureStateElement = (num) => {
-  // console.log(newRows.length)
-  // console.log(newRows[newRows.length - 1])
   return {
   id: state.nextID + num,
   shapeName:"",
@@ -82,7 +64,7 @@ const pureStateElement = (num) => {
   veneer2:"",
   shapeWidth:"",
   veneerL:"",
-  veneerR:"",
+  veneerP:"",
 }};
 
 for(let i = 0; i<numerRow; i++){
@@ -96,36 +78,55 @@ newRows.push(pureStateElement(i + 1))
 }
 
 
-// const addNewRow = (numerRow) => {
-//   const newRows = [...state.data];
-
-// const pureStateElement = (num) => {
-//   return {
-//   id: num + state.data.length,
-//   shapeName:"",
-//   shapeLength:"",
-//   veneer1:"",
-//   veneer2:"",
-//   shapeWidth:"",
-//   veneerL:"",
-//   veneerR:"",
-// }};
-
-// for(let i = 0; i<numerRow; i++){
-// newRows.push(pureStateElement(i + 1))
-// }
-
-//   setState({
-//     ...state, data:[...newRows]
-//   })
-// }
-
 const handleRemoveRow = (id) => {
   setState({
     ...state, data:state.data.filter((item) => (item.id !== id))
   })
 }
 
+const handleSubmit = () => {
+  // Sprawdzenie czy wszystkie pola Szerokości i Wysokości są wypełnione
+  const checkData = state.data.filter(data => data.shapeLength =="" && data.shapeWidth =="")
+  console.log(checkData);
+
+  if(checkData.length){
+    console.log("Wypełnij pola wymagane")
+  } else {
+    const dataToSave = [state.orderName, state.board, state.data];
+    // const toSave = JSON.stringify(dataToSave);
+    
+    // Wysyłanie formularza
+
+  //   axios
+  //     .post(`http://localhost:3001/`, {
+  //       method: "POST",
+  //       headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  //       body: JSON.stringify(dataToSave)
+  //     .then((result) => {
+  //       console.log(result);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.response.data, true);
+  //     })
+  // })
+
+  fetch(`http://localhost:3001`, {
+    method: "post",
+    // body: JSON.stringify(dataToSave)
+    body: "tu front",
+    headers : { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+     }
+})
+.then(res => res.json())
+.then(res => {
+    console.log("Dodałem użytkownika");
+    console.log(res);
+})
+
+}
+}
 
   return(
     <>
@@ -133,8 +134,13 @@ const handleRemoveRow = (id) => {
       <Table handleInputChange={ handleInputChange } data={ state.data } removeRow={ handleRemoveRow }/>
       <div className="row">
         <div className="col s12">
-          <Buttons title={"Dodaj 1"} name={"add1"} quantity={1} addNewRow={addNewRow}/>
-          <Buttons title={"Dodaj 10"} name={"add10"} quantity={10} addNewRow={addNewRow}/>
+          <Buttons title={"Dodaj 1"} name={"add1"} width={"s4"} offset={"offset-s1"} quantity={1} func={addNewRow}/>
+          <Buttons title={"Dodaj 10"} name={"add10"} width={"s4"} offset={"offset-s1"} quantity={10} func={addNewRow}/>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col s12">
+          <Buttons title={"Wyślij formatki"} width={"s9"} offset={"offset-s1"} name={"submit"} func={handleSubmit}/>
         </div>
       </div>
     </>

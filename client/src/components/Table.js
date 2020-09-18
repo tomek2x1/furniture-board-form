@@ -1,12 +1,8 @@
 import React from 'react';
-
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 
-
 const Table = ({ handleInputChange, data, removeRow }) => {
-
-
 
     const add10Rows = data.map((file, index) => {
         return (
