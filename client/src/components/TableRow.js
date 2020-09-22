@@ -11,7 +11,7 @@ const TableRow = ({ handleInputChange, file, removeRow, position}) => {
                 <input type="text" name="shapeName" value={ file.shapeName } onChange={(e) => {handleInputChange(e, file.id)}} />
             </td>
             <td>
-                <input type="text" name="shapeLength" value={ file.shapeLength } onChange={(e) => {handleInputChange(e, file.id)}} />
+                <input type="number" name="shapeLength" value={ file.shapeLength } style={ !file.shapeLength ? {border:'1px solid rgba(241, 130, 141,1)'} : null } onChange={(e) => {handleInputChange(e, file.id)}} />
             </td>
             <td>
                 <div className="input-field col s12">
@@ -30,7 +30,7 @@ const TableRow = ({ handleInputChange, file, removeRow, position}) => {
                 </div>
             </td>
             <td>
-                <input type="text" name="shapeWidth" value={ file.shapeWidth } onChange={(e) => {handleInputChange(e, file.id)}} />
+                <input type="number" name="shapeWidth" value={ file.shapeWidth } style={ !file.shapeWidth ? {border:'1px solid rgba(241, 130, 141,1)'} : null } onChange={(e) => {handleInputChange(e, file.id)}} />
             </td>
             <td>
                 <div className="input-field col s12">

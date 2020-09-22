@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MainInfo = ({orderName, board, handleMainInfo}) => {
+const MainInfo = ({orderName, boardType, handleMainInfo}) => {
 
   return(
     <div>
@@ -12,8 +12,8 @@ const MainInfo = ({orderName, board, handleMainInfo}) => {
         </div>
         <div className="row">
             <div className="input-field col s6">
-                <input type="text" id="board" name="board" value={ board } onChange={ e => { handleMainInfo(e) } } />
-                <label className="active" htmlFor="board">Płyta</label>
+                <input type="text" id="boardType" name="boardType" value={ boardType } onChange={ e => { handleMainInfo(e) } } />
+                <label className="active" htmlFor="boardType">Płyta</label>
             </div>
         </div>
     </div>

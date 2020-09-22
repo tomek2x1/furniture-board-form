@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import M from "materialize-css";
-import axios from "axios";
 import MainInfo from './MainInfo';
 import Table from './Table';
 import Buttons from './Buttons';
@@ -10,7 +9,7 @@ const App = () => {
 
   const [state, setState] = useState({
     orderName:"",
-    board:"",
+    boardType: "",
     data:[],
     nextID:0,
   });
@@ -60,11 +59,11 @@ const pureStateElement = (num) => {
   id: state.nextID + num,
   shapeName:"",
   shapeLength:"",
-  veneer1:"",
-  veneer2:"",
+  veneer1:"NIE",
+  veneer2:"NIE",
   shapeWidth:"",
-  veneerL:"",
-  veneerP:"",
+  veneerL:"NIE",
+  veneerP:"NIE",
 }};
 
 for(let i = 0; i<numerRow; i++){
@@ -87,43 +86,38 @@ const handleRemoveRow = (id) => {
 const handleSubmit = () => {
   // Sprawdzenie czy wszystkie pola Szerokości i Wysokości są wypełnione
   const checkData = state.data.filter(data => data.shapeLength =="" && data.shapeWidth =="")
-  console.log(checkData);
 
   if(checkData.length){
     console.log("Wypełnij pola wymagane")
   } else {
-    const dataToSave = [state.orderName, state.board, state.data];
-    // const toSave = JSON.stringify(dataToSave);
+    console.log("Wysłano formularz")
     
     // Wysyłanie formularza
 
-  //   axios
-  //     .post(`http://localhost:3001/`, {
-  //       method: "POST",
-  //       headers: {'Content-Type':'application/x-www-form-urlencoded'},
-  //       body: JSON.stringify(dataToSave)
-  //     .then((result) => {
-  //       console.log(result);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response.data, true);
-  //     })
-  // })
 
-  fetch(`http://localhost:3001`, {
-    method: "post",
-    // body: JSON.stringify(dataToSave)
-    body: "tu front",
-    headers : { 
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-     }
+fetch("http://localhost:3002/", {
+  method: "POST",
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(state)
 })
-.then(res => res.json())
-.then(res => {
-    console.log("Dodałem użytkownika");
-    console.log(res);
-})
+  .then(res => res.json())
+  .then(res => {
+      setState({
+        ...state, nextID: 0, orderName: "", boardType: "", data: [{
+          id: 0,
+          shapeName: "",
+          shapeLength: "",
+          veneer1: "NIE",
+          veneer2: "NIE",
+          shapeWidth: "",
+          veneerL: "NIE",
+          veneerP: "NIE",
+        }],
+      });
+    })
 
 }
 }
